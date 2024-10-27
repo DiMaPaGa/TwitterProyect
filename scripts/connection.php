@@ -9,9 +9,10 @@ $pass = "root";
 
 $bd = "social_network";
 
-$connect=mysqli_connect($host, $user, $pass);
-
-mysqli_select_db($connect, $bd);
-
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$bd;charset=utf8mb4", $user, $pass);
+} catch (PDOException $e) {
+    echo "Error de conexión" . $e->getMessage();
+}
 
 ?>
