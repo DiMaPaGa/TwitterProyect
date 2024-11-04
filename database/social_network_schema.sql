@@ -79,3 +79,35 @@ COLLATE = utf8mb4_0900_ai_ci;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+- -----------------------------------------------------
+-- Table `social_network`.`private_messages`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `social_network`.`private_messages` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `sender_id` INT NOT NULL,
+  `receiver_id` INT NOT NULL,
+  `message` LONGTEXT NOT NULL,
+  `sent_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `fk_private_messages_sender_idx` (`sender_id` ASC),
+  INDEX `fk_private_messages_receiver_idx` (`receiver_id` ASC),
+  CONSTRAINT `fk_private_messages_sender`
+    FOREIGN KEY (`sender_id`)
+    REFERENCES `social_network`.`users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_private_messages_receiver`
+    FOREIGN KEY (`receiver_id`)
+    REFERENCES `social_network`.`users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+ALTER TABLE `social_network`.`private_messages`
+ADD COLUMN `is_read` TINYINT(1) NOT NULL DEFAULT 0;
+
+ALTER TABLE `social_network`.`private_messages`
+ADD COLUMN `createDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
